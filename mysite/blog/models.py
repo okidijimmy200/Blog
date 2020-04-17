@@ -1,0 +1,46 @@
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+
+class POST(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    )
+    # This is the field for the post title.
+    title = models.CharField(max_length=250)
+    # slug this field is used in our URLs to build friendly URLs for our  users
+    #unique_for_date is used to build URLs for post using slug and dat of publish
+    slug = models.SlugField(max_length=250,
+                            unique_for_date='publish')
+    """We are telling Django that each post is written by a user, and a user can write any number of posts
+    The on_delete parameter specifies the behavior to adopt when the referenced object is deleted
+    the related_name attribute shows us the reverse relationship from user to post to enable us get related objects easily"""
+    author = models.ForeignKey(User,
+                            on_delete=models.CASCADE,
+                            related_name='blog_post')
+    # body of the post.
+    body = models.TextField()
+    # publish --This datetime indicates when the post was published.
+    publish = models.DateTimeField(default=timezone.now)
+    # created--when the post ws created, we use auto_now_add so the date is auto-matically saved when creating object
+    created = models.DateTimeField(auto_now_add=True)
+    """updated--this shows when the post ws last updated, using auto_now here, the date will be
+    updated automatically when saving an object."""
+    updated = models.DateTimeField(auto_now=True)
+    # status--shows status of a post, we use choices parameter
+    status = models.CharField(max_length=10,
+                                choices=STATUS_CHOICES,
+                                default='draft')
+    # meta is used to sort results in publish field in descending order by default
+    # decending order, we use -ve prefix
+    # so posts published recently will appear first
+    class Meta:
+        ordering = ('-publish',)
+
+    # The __str__() method is the default human-readable representation
+    # of the object used in administration site and others
+    def __str__(self):
+        return self.title
+
+
