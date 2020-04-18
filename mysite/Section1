@@ -1,0 +1,9 @@
+on_delete parameter:
+-this is an sql standard and specifies that when a particular user
+is deleted, the database related to that user will also be deleted
+
+datetime zone
+Django's timezone now method as the default value to return current date time in 
+a date-time aware format
+
+customizing django admin

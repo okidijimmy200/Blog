@@ -1,7 +1,18 @@
 from django.contrib import admin
 from .models import POST
 
-admin.site.register(POST)
+# this shows how we can display attributes in our admin
+@admin.register(POST)
+class POSTAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug', 'author', 'publish'
+                    , 'status')
+#     other features
+    list_filter = ('status', 'created', 'publish', 'author')
+    search_fields = ('title', 'body')
+    prepopulated_fields = {'slug':('title',)}
+    raw_id_fields = ('author',)
+    date_hierarchy = 'publish'
+    ordering = ('status', 'publish')
 
 
 
