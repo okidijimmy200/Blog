@@ -7,3 +7,58 @@ Django's timezone now method as the default value to return current date time in
 a date-time aware format
 
 customizing django admin
+
+Lec 1:
+How to retrieve data from database using Queryset
+-django gives you a free API to interact with the database called Queryset
+-The get() method allows you to retrieve a single object from the
+database.
+
+-Post.objects.create() method helps us write data directly to the database
+
+Retrieving Objects
+-A QuerySet is a collection of objects from your database
+that can have several filters to limit the results.
+
+-to retrieve all POST we use POST.objects.all()
+
+Filtering Content according to attribute
+-performin filtering for post published
+POST.objects.filter()
+-we cld also filter according to multiple contents
+**POST.objects.filter(Publish__year=2020) \
+               .filter(author__username='admin')
+
+Using Exclude
+-we can use exclude() to exclude some attributes
+POST.objects.filter(publish__year=2020)\
+            .exclude(title__startswith='why')
+
+Using order_by()
+-we can retrieve all objects ordered by title
+////////in descending order//////////////////
+POST.objects.order_by('title')
+////////in ascending order//////////////////
+POST.objects.order_by('-title')
+
+Deleting Objects
+-we can delete using delete() according to id.
+deleting objects will delete also its dependencies
+
+QuerySets are evaluated
+The first time you iterate over them
+When you slice them, for instance, Post.objects.all()[:3]
+When you pickle or cache them
+When you call repr() or len() on them
+When you explicitly call list() on them
+When you test them in a statement, such as bool(), or , and, or if
+
+Lecture 2:
+Creating Model Manager
+Object is the default manager to retrieve all objects in the database
+-there are two ways to add managers to your models
+**we can add extra manager methods
+-here we use a QuerySet eg POST.objects.my_manager()
+**modify initial manager QuerySet API
+The manager will allow us to retrieve posts using Post.published.all().
+-Post.my_manager.all().
