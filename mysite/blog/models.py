@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+#the reverse() method allows you to build
+# URLs by their name and passing optional parameters.
+from django.urls import reverse
 
 
 # creating a custom manager
@@ -14,6 +17,12 @@ class PublishedManager(models.Manager):
                           .filter(status='published')
 
 class POST(models.Model):
+
+    # The __str__() method is the default human-readable representation
+    # of the object used in administration site and others
+    def __str__(self):
+        return self.title
+
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published'),
@@ -49,14 +58,24 @@ class POST(models.Model):
     class Meta:
         ordering = ('-publish',)
 
-    # The __str__() method is the default human-readable representation
-    # of the object used in administration site and others
-    def __str__(self):
-        return self.title
 
     # default manager
     objects = models.Manager()
 #     our custom manager
     published = PublishedManager()
+
+    '''The convention in Django is to add a get_absolute_url() method to the
+model that returns the canonical URL of the object.'''
+    
+    def get_absolute_url(self):
+        return reverse('blog:post_detail',
+                        args=[self.publish.year,
+                        self.publish.month,
+                        self.publish.day,
+                        self.slug])
+
+
+
+    
 
 
