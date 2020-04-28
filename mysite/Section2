@@ -1,0 +1,14 @@
+Lecture 1:
+Building the List and Detail view
+-A Django view is just a
+Python function that receives a web request and returns a web
+response
+
+**Post_list view
+In this view, we are retrieving all the posts
+with the published status using the published manager we created
+previously.
+
+Lecture 2:
+Adding URL patterns for your views
+-
