@@ -24,4 +24,14 @@ easily.
 
 Lecture 5
 Using class-based views
--
+-you can also define your views as class methods.
+
+Advantages of class based views over function based views
+--Organizing code related to HTTP methods, such as GET, POST,
+or PUT, in separate methods instead of using conditional
+branching
+--Using multiple inheritance to create reusable view classes
+(also known as mixins)
+
+-In order to keep pagination working, we have to use the right page
+object that is passed to the template.

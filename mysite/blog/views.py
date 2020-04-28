@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from .models import POST
-
+# use of pagination
 from django.core.paginator import Paginator, EmptyPage,\
                                     PageNotAnInteger
+
+# use of class based views
+from django.views.generic import ListView
 
 def post_list(request):
     # '''retrieving all the posts with the published status using the published manager'''
@@ -32,10 +35,18 @@ def post_detail(request, year, month, day, post):
     ''' get_object_or_404 retrieves the object that matches the given parameters or
 launches an HTTP 404 '''
     post = get_object_or_404(POST, slug=post,
-    status='published',
-    publish__year=year,
-    publish__month=month,
-    publish__day=day)
+                            status='published', publish__year=year,
+                            publish__month=month,publish__day=day)
     return render(request,
-    'blog/post/detail.html',
-    {'post': post})
+                        'blog/post/detail.html',
+                        {'post': post})
+
+# use of classbased views
+class PostListView(ListView):
+    # Use QuerySet instead of retrieving all objects
+    queryset = POST.published.all()
+    # context variable posts for the query results.
+    context_object_name = 'posts'
+    # Paginate the result displaying three objects per page.
+    paginate_by = 3
+    template_name = 'blog/post/list.html'
