@@ -15,4 +15,13 @@ Adding URL patterns for your views
 
 Lecture 3:
 Canonical URLs for models
+-we add canonical URL in the models wch help us generate simple to use slugs
+
+Lecture 4
+Adding pagination
+-Django has a built-in pagination class that allows you to manage paginated data
+easily.
+
+Lecture 5
+Using class-based views
 -
