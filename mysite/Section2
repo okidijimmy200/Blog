@@ -35,3 +35,41 @@ branching
 
 -In order to keep pagination working, we have to use the right page
 object that is passed to the template.
+
+Lecture 6:
+Creating forms with Django
+***Form: Allows you to build standard forms
+***ModelForm: Allows you to build forms tied to model instances
+
+--default widget that
+determines how the field is rendered in HTML. The default widget can be overridden with the widget attribute.
+
+steps of validation
+**When the view is loaded initially with a GET request, we
+create a new form instance that will be used to display the
+empty form in the template:
+form = EmailPostForm()
+
+**The user fills in the form and submits it via POST.
+
+**we validate the submitted data using the form's
+is_valid(If the form is not valid, we render the form in the template
+again with the submitted data. We will display validation
+errors in the template.) method.
+
+**If the form is valid, we retrieve the validated data accessing
+form.cleaned_data.
+
+Lecture 7:
+Sending Emails
+-to send an email
+**1st:need to have a local SMTP server or external SMTP server
+you can tell Django to write emails to the console using 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+Run the python manage.py shell command to open the Python shell and
+send an email
+--we use django.core.mail to send mail
+-when e result is 1, it means it was sent successfull,if 0 then error
+
+you need to put on the less secure app feature for google gmail to work

@@ -4,6 +4,13 @@ from .models import POST
 from django.core.paginator import Paginator, EmptyPage,\
                                     PageNotAnInteger
 
+# importing EmailPostform
+from .forms import EmailPostForm
+
+# importing core mail
+from django.core.mail import send_mail
+
+
 # use of class based views
 from django.views.generic import ListView
 
@@ -50,3 +57,49 @@ class PostListView(ListView):
     # Paginate the result displaying three objects per page.
     paginate_by = 3
     template_name = 'blog/post/list.html'
+
+
+# this view takes the request object and the post_id variable as parameters.
+def post_share(request, post_id):
+    # retrieve post by id
+    '''get_object_or_404() shortcut to retrieve the post by ID and make sure that the retrieved post has a published
+status.'''
+    post = get_object_or_404(POST, id=post_id, status='published')
+    # variable set to true only when the post was sent
+            # later we will use sent in template to display a success message when the form is successfully submitted
+    sent = False
+
+# We differentiate whether the form was submitted or not based on the request method 
+# and submit the form using POST.
+    if request.method == 'POST':
+        # form was submitted
+        form = EmailPostForm(request.POST)
+        # we validate the submitted data using the form's is_valid() method.
+        
+        if form.is_valid():
+            # form fields passed validation
+            cd = form.cleaned_data
+            # ...send data
+            # we have to include a link to the post in the email, we use et_absolute_url()
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+
+            # We build the subject and the message body of the email
+            subject = '{} ({}) recommends you reading "{}"'.format(cd['name'], cd['email'], post.title)
+            message = 'Read "{}" at {}\n\n{}\'s comments:{}'.format(post.title, post_url, cd['name'], cd['comments'])
+            send_mail(subject, message, 'admin@myblog.com',[cd['to']])
+            # when the post is sent,its set to true
+            sent = True
+    
+    else:
+        form = EmailPostForm()
+    return render(request, 'blog/post/share.html', {'post': post,
+                                                    'form':form,
+                                                    'sent': sent})
+
+'''When the view is loaded initially with a GET request, we
+create a new form instance that will be used to display the
+empty form in the template:
+form = EmailPostForm()
+'''
+
+'''The user fills in the form and submits it via POST'''
