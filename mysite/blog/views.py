@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404
-from .models import POST
+from .models import POST, Comment
 # use of pagination
 from django.core.paginator import Paginator, EmptyPage,\
                                     PageNotAnInteger
 
 # importing EmailPostform
-from .forms import EmailPostForm
+from .forms import EmailPostForm, CommentForm
 
 # importing core mail
 from django.core.mail import send_mail
+
+ 
 
 
 # use of class based views
@@ -44,9 +46,31 @@ launches an HTTP 404 '''
     post = get_object_or_404(POST, slug=post,
                             status='published', publish__year=year,
                             publish__month=month,publish__day=day)
+    
+    # list of all active comments for this post
+    '''We use the manager for related objects we defined as comments using the
+related_name attribute of the relationship in the Comment model.'''
+    comments = post.comments.filter(active=True)
+
+    new_comment = None
+
+    if request.method == 'POST':
+        # A comment was posted
+        comment_form = CommentForm(data=request.POST)
+        # assign the current post to the comment
+        new_comment.post = post
+        # save the comment to the database
+        new_comment.save()
+
+    else:
+        comment_form = CommentForm()
+
     return render(request,
                         'blog/post/detail.html',
-                        {'post': post})
+                        {'post': post,
+                        'comments': comments,
+                        'new_comment': new_comment,
+                        'comment_form': comment_form})
 
 # use of classbased views
 class PostListView(ListView):

@@ -73,3 +73,30 @@ send an email
 -when e result is 1, it means it was sent successfull,if 0 then error
 
 you need to put on the less secure app feature for google gmail to work
+
+Lecture 8:
+Creating a comment system
+we will build a comment system for the blog, wherein the
+users will be able to comment on posts.
+
+Steps to create a comment system
+1. Create a model to save comments
+2. Create a form to submit comments and validate the input
+data
+3. Add a view that processes the form and saves the new
+comment to the database
+4. Edit the post detail template to display the list of comments
+and the form to add a new comment
+
+Creating forms from models
+**build forms to enable users comment
+two ways of writing forms ie Form and ModelForm
+
+ModelForm is used to build a form dynamically from your
+Comment model.
+
+Handling ModelForms in views
+**
+
+Adding comments to the post
+detail template

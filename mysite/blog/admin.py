@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import POST
+from .models import POST, Comment
 
 # this shows how we can display attributes in our admin
 @admin.register(POST)
@@ -25,6 +25,12 @@ class POSTAdmin(admin.ModelAdmin):
 
 '''Now, click on the Add Post link As you type the title of a new post, 
 the slug field is filled in automatically'''
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')
 
 
 

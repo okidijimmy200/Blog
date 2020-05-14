@@ -76,6 +76,27 @@ model that returns the canonical URL of the object.'''
 
 
 
-    
+# creating the comments section
+class Comment(models.Model):
+    # The related_name attribute allows us to name the attribute that we use for
+# the relation
+    post = models.ForeignKey(POST, on_delete=models.CASCADE,
+                            related_name='comments')
+
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    '''created field to sort comments in a chronological order by default.'''
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now_add=True)
+    ''' active boolean field that we will use to
+manually deactivate inappropriate comments'''
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created',)
+
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.name, self.post)
 
 
