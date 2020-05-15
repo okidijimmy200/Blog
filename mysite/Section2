@@ -97,6 +97,48 @@ Comment model.
 
 Handling ModelForms in views
 **
+The save() method creates an instance of the model that the
+form is linked to and saves it to the database. If you call it
+using commit=False, you create the model instance, but you don't
+save it to the database yet. This comes in handy when you
+want to modify the object before finally saving it, which is
+what we do next.
 
-Adding comments to the post
-detail template
+--The save() method is available for ModelForm but not for Form instances, since they
+are not linked to any model.
+
+
+
+Adding comments to the post detail template
+--Display the total number of comments for the post
+--Display the list of comments
+--Display a form for users to add a new comment
+
+Django template language doesn't use parentheses for calling methods.
+**The {% with %} tag allows us to assign a value to a new variable that will be available to be used
+until the {% endwith %} tag.
+
+--The {% with %} template tag is useful to avoid hitting the database or
+accessing expensive methods multiple times.
+
+**Template filters take the value of the variable they are applied to as their
+input and return a computed value
+
+**The pluralize template filter returns a string with the letter "s" if the
+value is different from 1. The preceding text will be rendered as 0
+comments, 1 comment, or N comments. Django includes plenty of
+template tags and filters that help you display information in the
+way you want.
+
+
+Add a couple of comments using the form. They should appear
+under your post in chronological order
+
+--Open the admin page and see a list of comments you created. Click on
+one of them to edit it, uncheck the Active checkbox, and click on the
+Save button. You will be redirected to the list of comments again,
+and the Active column will display an inactive icon for the
+comment. 
+
+Lecture 9
+Adding the tagging functionality

@@ -57,10 +57,15 @@ related_name attribute of the relationship in the Comment model.'''
     if request.method == 'POST':
         # A comment was posted
         comment_form = CommentForm(data=request.POST)
-        # assign the current post to the comment
-        new_comment.post = post
-        # save the comment to the database
-        new_comment.save()
+        if comment_form.is_valid():
+            '''We create a new Comment object by calling the form's save()
+method and assign it to the new_comment variable'''
+            # create comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+            # assign the current post to the comment
+            new_comment.post = post
+            # save the comment to the database
+            new_comment.save()
 
     else:
         comment_form = CommentForm()

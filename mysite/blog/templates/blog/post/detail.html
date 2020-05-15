@@ -19,4 +19,46 @@ called blog and the URL named post_share -->
     
 </p>
 
+<!-- adding the total comments -->
+{% with comments.count as total_comments %}
+<h2>
+    <!-- We use the pluralize template filter to display a plural suffix for the
+word comment, depending on the total_comments value. -->
+    {{ total_comments }} comment {{ total_comments }}
+</h2>
+{% endwith %}
+
+<!-- include the list of comments. -->
+<!-- for template tag to loop through comments -->
+{% for comment in comments %}
+<div class="comment">
+    <p class="info">
+        <!-- We enumerate comments with the {{ forloop.counter }} variable, which contains the
+loop counter in each iteration. -->
+<!-- we display the name of the user who posted the comment, the date, and the body of the
+comment. -->
+        Comment {{ forloop.counter }} by {{ comment.name }}
+        {{ comment.created }}
+    </p>
+    {{ comment.body|linebreaks }}
+</div>
+<!-- default message if the comments list is empty, -->
+{% empty %}
+<p>There are no comments yet</p>
+{% endfor %}
+
+<!-- display a successful message instead when it is successfully submitted -->
+{% if new_comment %}
+<!-- if the new_comment object exists, we display a success message because the comment was successfully
+created. -->
+<h2>Your Comment has been added</h2>
+{% else %}
+<h2>Add a new comment</h2>
+<form action="" method="post">
+    {{ comment_form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Add comment"></p>
+</form>
+{% endif %}
+
 {% endblock %}
