@@ -142,3 +142,55 @@ comment.
 
 Lecture 9
 Adding the tagging functionality
+--you will create a way to tag our posts.
+The django-taggit module is a reusable application that primarily offers you a Tag model and a
+manager to easily add tags to any model
+********pip install django_taggit==0.22.2************
+
+--add the tag functionality to model
+---The tags manager will allow you to add, retrieve, and remove tags
+from Post objects.
+--make migrations
+--then perform migrate
+
+--using the python shell,
+>>> from blog.models import Post
+>>> post = Post.objects.get(id=1)
+--add some tags to it and retrieve its tags to check whether they
+were successfully added
+>>> post.tags.add('music', 'jazz', 'django')
+>>> post.tags.all()
+<QuerySet [<Tag: jazz>, <Tag: music>, <Tag: django>]>
+
+--remove a tag and check the list of tags again
+>>> post.tags.remove('django')
+>>> post.tags.all()
+<QuerySet [<Tag: jazz>, <Tag: music>]>
+
+--run the admin in the browser
+--we will edit our blog posts to display tags
+--blog/post/list.html
+--The join template filter works as the Python string join() method to
+concatenate elements with the given string.
+--we will see the tags in blog page
+
+Lecture 10:
+Retrieving	posts	by	similarity 
+-Using	tags, we can	classify our	blog	posts	very	well.	Posts	about	similar	topics	will	have	several tags	in	common.
+
+In	order	to	retrieve	similar	posts	for	a	specific	post,	we	need	to perform	the	following	steps:
+1.	Retrieve	all	tags	for	the	current	post 
+2.	Get	all	posts	that	are	tagged	with	any	of	those	tags 
+3.	Exclude	the	current	post	from	that	list	to	avoid recommending	the	same	post 
+4.	Order	the	results	by	the	number	of	tags	shared	with	the current	post 
+5.	In	case	of	two	or	more	posts	with	the	same	number	of	tags, recommend	the	most	recent	post 
+6.	Limit	the	query	to	the	number	of	posts	we	want	to recommend
+
+Count	aggregation in views
+	This function	will	allow	us	to	perform	aggregated	counts	of	tags
+	Avg:	The	value	average
+	Max:	The	maximum	value
+	Min:	The	minimum	value
+	Count:	The	objects	coun
+
+You	are	now	able	to	successfully	recommend	similar	posts	to	your users.	django-taggit

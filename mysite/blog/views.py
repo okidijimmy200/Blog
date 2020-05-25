@@ -10,15 +10,26 @@ from .forms import EmailPostForm, CommentForm
 # importing core mail
 from django.core.mail import send_mail
 
+# import taggit
+from taggit.models import Tag
+# adding the retrieve post by similarity
+from django.db.models import Count
+
  
 
 
 # use of class based views
 from django.views.generic import ListView
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     # '''retrieving all the posts with the published status using the published manager'''
     object_list = POST.published.all()
+    # adding the tag functionality
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
     '''We instantiate the Paginator class with the number of objects to display on each page'''
     paginator = Paginator(object_list, 3) # 3 posts in each page
     '''page GET parameter that indicates the current page we are on'''
@@ -36,7 +47,8 @@ def post_list(request):
     return render(request,
                 'blog/post/list.html',
                 {'page': page,
-                'posts': posts})
+                'posts': posts,
+                'tag':tag})
 
 
 '''view to display a single post'''
@@ -70,12 +82,24 @@ method and assign it to the new_comment variable'''
     else:
         comment_form = CommentForm()
 
+    # to perform aggregation count(list of similar posts)
+    '''We retrieve a Python	list	of	IDs	for	the	tags	of	the	current post.	The	values_list() QuerySet	returns	tuples	with	the values	for	the	given	fields.	We	pass	flat=True	to	it	to	get	a	flat list	like	[1,	2,	3,	...].'''
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    '''We	get	all	posts	that	contain	any	of	these	tags,excluding the current	post itself'''
+    similar_posts = POST.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    '''	We	use	the	Count	aggregation	function	to	generate	a calculated	field—same_tags—that	contains	the	number	of	tags
+shared	with	all	the	tags	queried. '''
+    '''We	order	the	result	by	the	number	of	shared	tags (descending	order)	and	by	publish	to	display	recent	posts	first for	the	posts	with	the	same	number	of	shared	tags.	We	slice the	result	to	retrieve	only	the	first	four	posts.'''
+    similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+                                .order_by('-same_tags', '-publish')[:4]
+
     return render(request,
                         'blog/post/detail.html',
                         {'post': post,
                         'comments': comments,
                         'new_comment': new_comment,
-                        'comment_form': comment_form})
+                        'comment_form': comment_form,
+                        'similar_posts': similar_posts})
 
 # use of classbased views
 class PostListView(ListView):

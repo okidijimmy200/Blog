@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 #the reverse() method allows you to build
 # URLs by their name and passing optional parameters.
 from django.urls import reverse
+# import taggit
+from taggit.managers import TaggableManager
 
 
 # creating a custom manager
@@ -63,6 +65,8 @@ class POST(models.Model):
     objects = models.Manager()
 #     our custom manager
     published = PublishedManager()
+    # including the tag manager
+    tags = TaggableManager()
 
     '''The convention in Django is to add a get_absolute_url() method to the
 model that returns the canonical URL of the object.'''

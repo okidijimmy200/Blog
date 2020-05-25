@@ -18,6 +18,14 @@ called blog and the URL named post_share -->
     </a>
     
 </p>
+<!-- adding the post similar_post -->
+<h2>Similar posts</h2>
+{% for post in similar_posts %}
+<p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+</p>
+{% empty %}
+there are no similar posts yet
+{% endfor %}
 
 <!-- adding the total comments -->
 {% with comments.count as total_comments %}
