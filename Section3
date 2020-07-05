@@ -1,0 +1,23 @@
+Extending Your Blog Application
+-we will go through
+--Creating custom template tags and filters
+--Adding a sitemap and post feed
+--Implementing full text search with PostgreSQL
+
+Lecture 1:
+Creating custom template tags and filters
+-Django offers a variety of built-in template tags, such as {% if %} or {%
+block %}.
+-However, Django also allows you to create your own template tags
+to perform custom actions.
+-this is important when you need to add your own functionality to the templates
+
+**Django provides the following helper functions that allow you to
+create your own template tags in an easy manner:
+--simple_tag: Processes the data and returns a string
+--inclusion_tag: Processes the data and returns a rendered
+template
+
+--create a templatetags directory with an init file
+-The way you name the file is important. You will use the name of
+this module to load tags in templates.
