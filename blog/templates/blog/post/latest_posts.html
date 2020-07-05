@@ -1,0 +1,10 @@
+<ul>
+    <!-- we display an unordered list of posts using
+the latest_posts variable returned by our template tag. -->
+    {% for post in latest_posts %}
+    <li>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+

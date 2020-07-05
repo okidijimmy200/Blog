@@ -178,6 +178,10 @@ Lecture 10:
 Retrieving	posts	by	similarity 
 -Using	tags, we can classify our	blog	posts	very	well.	Posts	about	similar	topics	will	have	several tags	in	common.
 
+
+These steps are translated into a complex QuerySet that we will
+include in our post_detail view.
+
 In	order	to	retrieve	similar	posts	for	a	specific	post,	we	need	to perform	the	following	steps:
 1.	Retrieve	all	tags	for	the	current	post 
 2.	Get	all	posts	that	are	tagged	with	any	of	those	tags 

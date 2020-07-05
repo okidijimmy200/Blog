@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 
 # import taggit
 from taggit.models import Tag
-# adding the retrieve post by similarity
+# adding the retrieve post by similarity complex QuerySet
 from django.db.models import Count
 
  
