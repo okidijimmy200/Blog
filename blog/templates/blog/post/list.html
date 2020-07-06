@@ -1,4 +1,6 @@
 {% extends "blog/base.html" %}
+<!-- markdown tags -->
+{% load blog_tags %}
 {% block title %}My Blog{% endblock %}
 {% block content %}
     <h1>My Blog</h1>
@@ -29,7 +31,11 @@ title to the canonical URL of the post. -->
         <!-- truncatewords truncates the value to the
 number of words specified -->
 <!-- linebreaks converts the output into HTML line breaks -->
-    {{ post.body|truncatewords:30|linebreaks }}
+    <!-- {{ post.body|truncatewords:30|linebreaks }} -->
+    <!-- USING CUSTOM GENERATED FILTERS -->
+    {{ post.body|markdown|truncatewords_html:30 }}
+    <!-- truncatewords_html filter truncates a string after a certain number of
+words, avoiding unclosed HTML tags. -->
     {% endfor %}
 
     <!-- including the pagination -->

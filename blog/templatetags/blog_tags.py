@@ -1,6 +1,9 @@
 from django import template
 from ..models import POST
 from django.db.models import Count
+# import mark safe & markdown
+from django.utils.safestring import mark_safe
+import markdown
 
 register = template.Library()
 '''template tags module needs to contain
@@ -25,3 +28,7 @@ each post. Count aggregation function to store the number of comments in the com
     return POST.published.annotate(
         total_comments=Count('comments') 
     ).order_by('-total_comments')[:count]
+
+@register.filter(name='markdown')
+def markdown_format(text):
+    return mark_safe(markdown.markdown(text))

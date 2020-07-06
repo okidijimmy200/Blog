@@ -1,4 +1,6 @@
 {% extends "blog/base.html" %}
+<!-- markdown tags -->
+{% load blog_tags %}
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
@@ -6,7 +8,9 @@
     <p class="date">
     Published {{ post.publish }} by {{ post.author }}
     </p>
-{{ post.body|linebreaks }}
+<!-- {{ post.body|linebreaks }} -->
+<!-- custom generated filters -->
+{{ post.body|markdown }}
 <!-- adding the share.html part -->
 <!-- we are building the URL dynamically using the {%
 url %} template tag provided by Django. We are using the namespace
