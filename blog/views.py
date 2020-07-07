@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage,\
                                     PageNotAnInteger
 
 # importing EmailPostform
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm, searchForm
 
 # importing core mail
 from django.core.mail import send_mail
@@ -14,6 +14,9 @@ from django.core.mail import send_mail
 from taggit.models import Tag
 # adding the retrieve post by similarity complex QuerySet
 from django.db.models import Count
+# import searchVector
+from django.contrib.postgres.search import SearchVector
+
 
  
 
@@ -156,3 +159,23 @@ form = EmailPostForm()
 '''
 
 '''The user fills in the form and submits it via POST'''
+
+# instantiate the SearchForm form.
+def post_search(request):
+    form = searchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = searchForm(request.GET)
+        '''GET method so that the resulting URL includes the query parameter. To check whether the form is
+submitted, we look for the query parameter in the request.GET dictionary.'''
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = POST.objects.annotate(
+                search = SearchVector('title', 'body'),
+            ).filter(search=query)
+    return render(request,
+            'blog/post/search.html',
+            {'form': form,
+            'query': query,
+            'results': results})

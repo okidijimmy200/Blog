@@ -119,3 +119,37 @@ and <description> RSS elements, respectively.
 -http://127.0.0.1:8000/blog/feed/ to run the feed
 -The final step is to add a feed subscription link to the blog's sidebar.
 Open the blog/base.html
+
+Lecture 5:
+Adding full-text search to your blog
+-if you want to perform complex search lookups, retrieving
+results by similarity or by weighting terms, you will need to use a
+full-text search engine.
+
+-add django.contrib.postgres to  the INSTALLED_APPS setting
+-Now, you can search against a single field using the search QuerySet
+lookup,
+
+-You might want to search against multiple fields,we use searchVector
+
+ie
+from django.contrib.postgres.search import SearchVector
+from blog.models import Post
+Post.objects.annotate(
+search=SearchVector('title', 'body'),
+).filter(search='django')
+-Using annotate and defining SearchVector with both fields, we provide
+a functionality to match the query against both the title and body of
+the posts.
+
+# single search query
+POST.objects.filter(body__search='coronaVirus')
+
+)
+
+-We need to create a template to
+display the form and the results when the user performs a search.
+
+-/blog/post/search.html
+
+pg 188

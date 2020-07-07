@@ -17,3 +17,7 @@ class CommentForm(forms.ModelForm):
         '''django fields is used to show which fields you want to include in your form using a
 fields list, u can ignore if u want to include everything, or fields to exclude'''
         fields = ('name', 'email', 'body')
+
+# search form
+class searchForm(forms.Form):
+    query = forms.CharField()
