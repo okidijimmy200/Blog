@@ -80,3 +80,42 @@ in the template
 
 --As you can see in the preceding screenshot, custom template filters
 are very useful to customize formatting
+
+Lecture 4:
+Adding a sitemap to your site
+-A sitemap is an XML file that tells search engines the pages of your website, their
+relevance, and how frequently they are updated.
+
+-This comes handy when you want to run multiple sites using a single Django project
+-Edit the settings.py file of your project and add django.contrib.sites and django.contrib.sitemaps to the INSTALLED_APPS
+setting.
+-python manage.py migrate
+-inside blog app, create sitemaps.py.
+
+-If you want to
+specify the URL for each object, you can add a location method to
+your sitemap class.
+-Edit the main urls.py file
+-run the development server and open http://127.0.0.1:8000/sitemap.xml in your browser
+
+-The URL for each post has been built calling its get_absolute_url()
+method.
+-The lastmod attribute corresponds to the post updated date field, as we
+
+Lecture 4:
+Creating feeds for your blog posts
+-Django has a built-in syndication feed framework similar manner to
+creating sitemaps using the site's framework.
+-A web feed is a data format (usually XML) that provides users with frequently updated
+content. Users will be able to subscribe to your feed using a feed
+aggregator, a software that is used to read feeds and get new
+content notifications.
+-feeds.py in blog
+
+-The
+title, link, and description attributes correspond to the <title>, <link>,
+and <description> RSS elements, respectively.
+-blog/urls.py file,
+-http://127.0.0.1:8000/blog/feed/ to run the feed
+-The final step is to add a feed subscription link to the blog's sidebar.
+Open the blog/base.html
