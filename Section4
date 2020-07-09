@@ -2,3 +2,34 @@ Lecture 1:
 Stemming and ranking results
 --PostgreSQL provides a ranking function that orders results based on how often
 the query terms appear and how close together they are
+
+Weighting queries
+-You can boost specific vectors so that more weight is attributed to
+them when ordering results by relevancy.
+
+-The default weights are D,
+C, B, and A that refer to the numbers 0.1, 0.2, 0.4, and 1.0, respectively.
+
+--We apply a weight of 1.0 to the title search vector and a weight of 0.4
+to the body vector: title matches will prevail over body content
+matches. We filter the results to display only the ones with a rank
+higher than 0.3.
+
+Lecture 2:
+Searching with trigram similarity
+-A trigram is a group of three consecutive characters. You can measure the similarity of
+two strings by counting the number of trigrams they share
+
+-pg_trgm extension first. using cmd
+**psql blog to access the db
+--CREATE EXTENSION pg_trgm;
+
+-- trigram similarity handles
+a hypothetical typo in the django term, showing search results
+for yango:
+
+Other full-text search engines
+--If you want to use Solr or Elasticsearch, you can
+integrate them into your Django project using Haystack
+
+pg 196

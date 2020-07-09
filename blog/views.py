@@ -16,7 +16,8 @@ from taggit.models import Tag
 from django.db.models import Count
 # import searchVector
 from django.contrib.postgres.search import SearchVector,SearchQuery, SearchRank
-
+# import trigram search functionality
+from django.contrib.postgres.search import TrigramSimilarity
 
  
 
@@ -177,12 +178,28 @@ submitted, we look for the query parameter in the request.GET dictionary.'''
             '''replace the above code with'''
             '''we created a SearchQuery object, filtered results
 by it, and used SearchRank to order the results by relevancy'''
-            search_vector = SearchVector('title', 'body')
-            search_query = SearchQuery(query)
+            # search_vector = SearchVector('title', 'body')
+            # search_query = SearchQuery(query)
+            # results = POST.objects.annotate(
+            #     search = search_vector,
+            #     rank = SearchRank(search_vector, search_query)
+            # ).filter(search= search_query).order_by('-rank')
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''3rd weighing queries'''
+            sector_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+            search_query =SearchQuery(query)
             results = POST.objects.annotate(
-                search = search_vector,
-                rank = SearchRank(search_vector, search_query)
-            ).filter(search= search_query).order_by('-rank')
+                rank = SearchRank(sector_vector, search_query)
+            ).filter(rank__gte=0.3).order_by('-rank')
+
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+            '''Using trigram similarty search'''''
+            # results = POST.objects.annotate(
+            #     similarity=TrigramSimilarity('title', 'body'),
+            # ).filter(similarity__gt=0.3).order_by('-similarity')
+
     return render(request,
             'blog/post/search.html',
             {'form': form,
