@@ -15,7 +15,7 @@ from taggit.models import Tag
 # adding the retrieve post by similarity complex QuerySet
 from django.db.models import Count
 # import searchVector
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector,SearchQuery, SearchRank
 
 
  
@@ -171,9 +171,18 @@ def post_search(request):
 submitted, we look for the query parameter in the request.GET dictionary.'''
         if form.is_valid():
             query = form.cleaned_data['query']
+            # results = POST.objects.annotate(
+            #     search = SearchVector('title', 'body'),
+            # ).filter(search=query)
+            '''replace the above code with'''
+            '''we created a SearchQuery object, filtered results
+by it, and used SearchRank to order the results by relevancy'''
+            search_vector = SearchVector('title', 'body')
+            search_query = SearchQuery(query)
             results = POST.objects.annotate(
-                search = SearchVector('title', 'body'),
-            ).filter(search=query)
+                search = search_vector,
+                rank = SearchRank(search_vector, search_query)
+            ).filter(search= search_query).order_by('-rank')
     return render(request,
             'blog/post/search.html',
             {'form': form,

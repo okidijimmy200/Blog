@@ -1,0 +1,4 @@
+Lecture 1:
+Stemming and ranking results
+--PostgreSQL provides a ranking function that orders results based on how often
+the query terms appear and how close together they are
