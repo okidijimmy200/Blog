@@ -14,7 +14,7 @@ ADMINS = (
 '''A value that begins with a period is used as a subdomain wildcard;
 '.educaproject.com' will match educaproject.com and any subdomain for this
 domain, for example course.educaproject.com and django.educaproject.com.'''
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = ['159.89.10.245']
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
